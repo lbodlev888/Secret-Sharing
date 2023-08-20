@@ -21,12 +21,23 @@ namespace Reconstruct
       Console.Write("How many pieces: ");
       int n = int.Parse(Console.ReadLine());
       string[] pieces = new string[n];
-      for(int i = 0; i < n; i++)
-      {
-        Console.Write($"File {(i+1).ToString()}: ");
-        string tempFileName = Console.ReadLine();
-        pieces[i] = File.ReadAllText(tempFileName);
+      Console.Write("Do the files have the default names?[y/n]"); char default_name = char.Parse(Console.ReadLine());
+      if(default_name == 'y') {
+        for(int i = 0; i < n; i++) pieces[i] = File.ReadAllText($"piece{i+1}.txt");
       }
+      else if(default_name == 'n') {
+        for(int i = 0; i < n; i++)
+        {
+          Console.Write($"File {(i+1).ToString()}: ");
+          string tempFileName = Console.ReadLine();
+          pieces[i] = File.ReadAllText(tempFileName);
+        }
+      }
+      else {
+        Console.WriteLine("Invalid Option");
+        return;
+      }
+      
       byte[] data = Convert.FromBase64String(pieces[0]);
       for(int i = 1; i < n; i++)
       {
