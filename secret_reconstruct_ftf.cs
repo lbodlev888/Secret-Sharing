@@ -37,7 +37,6 @@ namespace Reconstruct
         Console.WriteLine("Invalid Option");
         return;
       }
-      
       byte[] data = Convert.FromBase64String(pieces[0]);
       for(int i = 1; i < n; i++)
       {
