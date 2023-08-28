@@ -24,20 +24,16 @@ namespace Secret
       Console.Write("How many pieces: ");
       int n = int.Parse(Console.ReadLine());
       byte[] data = File.ReadAllBytes(file_path);
-      string[] pieces = new string[n-1];
       using(var rng = new RNGCryptoServiceProvider())
       {
         for(int i = 0; i < n-1; i++)
         {
           byte[] temp = new byte[data.Length];
           rng.GetBytes(temp);
-          pieces[i] = Convert.ToBase64String(temp);
-          File.WriteAllText($"piece{i+1}.txt", pieces[i]);
+          File.WriteAllText($"piece{i+1}.txt", Convert.ToBase64String(temp));
+          data = XOR(data, temp);
         }
       }
-      data = XOR(data, Convert.FromBase64String(pieces[0]));
-      for(int i = 1; i < n-1; i++)
-        data = XOR(data, Convert.FromBase64String(pieces[i]));
       File.WriteAllText($"piece{n}.txt", Convert.ToBase64String(data));
     }
   }
